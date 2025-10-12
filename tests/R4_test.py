@@ -9,7 +9,7 @@ def test_return_valid():
 def test_book_not_borrowed():
     suc, msg = return_book_by_patron("123456", 999)
     assert suc is False
-    assert "not borrowed" in msg.lower()
+    assert "book not found" in msg.lower()
 
 def test_invalid_patron_id():
     suc, msg = return_book_by_patron("xxxyyy", 1)

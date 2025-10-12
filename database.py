@@ -19,7 +19,10 @@ def get_db_connection():
 def init_database():
     """Initialize the database with required tables."""
     conn = get_db_connection()
-    
+    #Clean
+    conn.execute('DROP TABLE IF EXISTS borrow_records')
+    conn.execute('DROP TABLE IF EXISTS books')
+    conn.commit()
     # Create books table
     conn.execute('''
         CREATE TABLE IF NOT EXISTS books (

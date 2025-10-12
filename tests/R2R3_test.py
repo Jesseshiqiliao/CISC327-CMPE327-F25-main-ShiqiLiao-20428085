@@ -1,4 +1,5 @@
 import pytest
+import database
 from library_service import add_book_to_catalog, borrow_book_by_patron
 
 def test_borrow_book_valid():

@@ -2,8 +2,9 @@ import pytest
 from library_service import (
     add_book_to_catalog
 )
-
+from database import init_database
 def test_add_book_valid_input():
+    init_database()
     """Test adding a book with valid input."""
     success, message = add_book_to_catalog("Test Book", "Test Author", "1234567890123", 5)
     
