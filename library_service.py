@@ -165,6 +165,8 @@ def search_books_in_catalog(search_term: str, search_type: str) -> List[Dict]:
     
     TODO: Implement R6 as per requirements
     """
+    if not search_term.strip():
+        return []
     return [b for b in get_all_books() 
             if (search_type=='isbn' and b['isbn']==search_term)
             or (search_type=='title' and search_term.lower() in b['title'].lower())
@@ -176,17 +178,28 @@ def get_patron_status_report(patron_id: str) -> Dict:
     
     TODO: Implement R7 as per requirements
     """
-    bb = get_patron_borrowed_books(patron_id)  #db func
-    total_fee = 0.0
-    now = datetime.now()
-    books = []
-    for r in bb:
-        overdue = max(0,(now - r['due_date']).days)
-        fee = min(15.0,0.5*min(overdue,7)+1.0*max(overdue-7,0)) if overdue>0 else 0.0
-        total_fee += fee
-        books.append({'id':r['book_id'],'title':r['title'],'due':r['due_date'].strftime("%Y-%m-%d"),'overdue':overdue})
+    if not patron_id.isdigit() or len(patron_id) != 6:
+        return {}
 
-    return {'borrowed_books':books,
-            'total_late_fees':round(total_fee,2),
-            'num_borrowed':len(bb),
-            'status':'OK'}
+    now = datetime.now()
+    borrowed = get_patron_borrowed_books(patron_id)
+    curr = []
+    total_fee = 0.0
+
+    for b in borrowed:
+        overdue = max(0, (now - b['due_date']).days)
+        fee = min(15.0, 0.5*min(overdue,7) + 1.0*max(overdue-7,0)) if overdue>0 else 0.0
+        total_fee += fee
+        curr.append({
+            "id": b['book_id'],
+            "title": b['title'],
+            "due": b['due_date'].strftime("%Y-%m-%d"),
+            "overdue": overdue
+        })
+
+    return {
+        "currently_borrowed": curr,
+        "history": curr.copy(),
+        "late_fees": round(total_fee, 2),
+        "borrow_count": len(curr)
+    }
