@@ -10,7 +10,7 @@ from database import (
     insert_book, insert_borrow_record, update_book_availability,
     update_borrow_record_return_date, get_all_books, get_patron_borrowed_books
 )
-from services.payment_service import PaymentGateway
+from payment_service import PaymentGateway
 
 def add_book_to_catalog(title: str, author: str, isbn: str, total_copies: int) -> Tuple[bool, str]:
     """
