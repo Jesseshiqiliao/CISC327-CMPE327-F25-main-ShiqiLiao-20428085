@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import Mock
-from services.library import pay_late_fees, refund_late_fee_payment
-from services.library import calculate_late_fee_for_book, get_book_by_id
+from library_service import pay_late_fees, refund_late_fee_payment
+from library_service import calculate_late_fee_for_book, get_book_by_id
 
 
 @pytest.fixture
